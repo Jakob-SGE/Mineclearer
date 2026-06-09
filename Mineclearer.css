@@ -4,21 +4,27 @@
     grid-template-rows: repeat(9, 40px);
     gap: 4px;
     justify-content: center;
-    background-color: grey;
-    border-color: grey ;
-    width: 392px;  
-    height: 392px; 
+    background-color: rgb(65, 65, 65);
+    border-color: rgb(70, 70, 70) ;
+    height: 392px;
+    width: 392px;
 }
 
 .cell{
     width: 100%;
     height: 100%;
-    border-right: 1px white;
-    border-top: 1px white;
-    border-left: 1px grey;
-    border-bottom: 1px grey;
+    background-color: rgba(229, 228, 232, 0.475);
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
+.revealed{
+   width: 100%;
+    height: 100%;
+    background-color: rgb(255, 255, 255);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+ 

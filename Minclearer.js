@@ -3,8 +3,10 @@ const cols = 9;
 const rows = 9;
 const TOTAL_CELLS = cols * rows;
 const totalMines = 10;
+const neighbours = [[-1, -1], [-1, 0], [-1, 1], [ 0, -1], [ 0, 1], [ 1, -1], [ 1, 0], [ 1, 1]];
 let mineLocations = [];
 const restartButton = document.getElementById("restartButton");
+
 
 const container = document.getElementById('container');
 
@@ -24,38 +26,53 @@ function startGame () {
     } while (mineLocations.includes(`${row},${col}`));
     mineLocations.push(`${row},${col}`);
   }
-  console.log(mineLocations)
+  console.log(mineLocations);
 }
 
 container.addEventListener('click', function(event) {
-if (event.target.classList.contains('cell')) {
-  const cellIndex = Array.from(container.children).indexOf(event.target);
-  const row = Math.floor(cellIndex / cols);
-  const col = cellIndex % cols;
-  if (mineLocations.includes(`${row},${col}`)) {
-    event.target.style.backgroundColor = 'red';
-    alert('Game Over!');
+  if (event.target.classList.contains('cell')) {
+    const cellIndex = Array.from(container.children).indexOf(event.target);
+    const row = Math.floor(cellIndex / cols);
+    const col = cellIndex % cols;
+    if (mineLocations.includes(`${row},${col}`)) {
+      event.target.style.backgroundColor = 'red';
+      alert('Game Over!');
+      startGame();
+    } 
+    else {
+      event.target.className = 'revealed';
+      let neighbourCount = neighbourCalculation(row, col, neighbours);
+      event.target.textContent = `${neighbourCount}`;
+      }
+
+    }
+  const revealedCells = document.querySelectorAll('.revealed').length;
+  if (revealedCells + totalMines == TOTAL_CELLS){
+    alert('YOU WON!');
     startGame();
-  } 
-  else {
-    event.target.className = 'revealed';
   }
-}
-const revealedCells = document.querySelectorAll('.revealed').length
-if (revealedCells + totalMines == TOTAL_CELLS){
-  alert('YOU WON!')
-  startGame()
-}
 });
 
-function neighbourCalculation () {
-  
+
+
+function neighbourCalculation (row, col, directions) {
+  let count = 0;
+for (const [rowOffset, colOffset] of directions) {
+    const checkRow = row + rowOffset;
+    const checkCol = col + colOffset;
+    if (mineLocations.includes(`${checkRow},${checkCol}`)) {
+      count++;
+    }
+  }
+  return count;
 }
+
+
 
 restartButton.addEventListener('click', function(){
   startGame();
 })
 
-container.addEventListener("click", function(){console.log("Button was clicked")})
+container.addEventListener("click", function(){console.log("Button was clicked")});
 
 startGame();
